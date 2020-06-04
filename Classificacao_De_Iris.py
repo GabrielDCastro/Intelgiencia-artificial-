@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 from IPython.display import Image
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
@@ -61,4 +62,14 @@ graph = pydotplus.graph_from_dot_data(dot_data)
 
 # Show graph
 
-classifier_dt.predict(sample)
+print(classifier_dt.predict(sample))
+
+dataFrameCluster = dataFrame.drop(columns=['Class'])
+objAgrupador = KMeans(n_clusters=3,random_state=0)
+objAgrupador.fit(dataFrameCluster)
+dataFrame_clustered = objAgrupador.fit_predict(dataFrameCluster)
+print(dataFrame_clustered)
+results = dataFrame[['Class']].copy()
+results['clusterNumber'] = dataFrame_clustered
+pd.set_option('display.max_rows', 150)
+print(results)
